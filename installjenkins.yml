@@ -1,0 +1,27 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install jenkins
+        package:
+        - name: java-1.8.0-openjdk-devel
+          state: installed
+
+    - name:enable jenkins repo
+      command: curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
+    
+    - name: add repo
+      command: rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key 
+
+    - name: Install jenkins
+        package:
+        - name: jenkins
+          state: installed
+
+    - name: enable jenkins
+      command: systemctl enable jenkins
+
+    - name: setup firewall
+      command: firewall-cmd --permanent --zone=public --add-port=8080/tcp
+
+    - name: reload firewall
+      command: firewall-cmd --reload
