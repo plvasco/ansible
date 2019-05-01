@@ -1,0 +1,3 @@
+- hosts: webservers
+  tasks:
+    service: name=firewalld state=stopped

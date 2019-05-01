@@ -1,0 +1,4 @@
+- hosts: all
+  tasks:
+    - name: verify docker compose
+      command: docker-compose version

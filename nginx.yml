@@ -1,0 +1,13 @@
+- hosts: 192.168.0.25
+  become: yes
+  tasks:
+  - name: Install nginx
+      package:
+        - name: nginx
+          state: installed
+
+  - name: start nginx
+      service:
+        - name: nginx
+          state: started
+          enabled: yes
