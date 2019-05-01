@@ -1,0 +1,13 @@
+- hosts: webservers
+  become: yes
+  tasks:
+  - name: Install apache
+      package:
+        - name: httpd
+          state: installed
+
+  - name: start httpd
+      service:
+        - name: httpd
+          state: started
+          enabled: yes
