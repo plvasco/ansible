@@ -3,13 +3,13 @@
   tasks:
     - name: add dns1 servers
       lineinfile:
-        path: /etc/resolver.conf
+        path: /etc/resolv.conf
         line: 'nameserver 209.18.47.63'
         insertbefore: BOF
     
     - name: add dns2 servers
       lineinfile:
-        path: /etc/resolver.conf
+        path: /etc/resolv.conf
         line: 'nameserver 209.18.47.62'
         insertbefore: BOF
         
