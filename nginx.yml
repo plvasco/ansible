@@ -3,8 +3,8 @@
   tasks:
   - name: Install nginx
       package:
-        - name: nginx
-          state: installed
+        name: nginx
+        state: installed
 
   - name: start nginx
       service:

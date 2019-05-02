@@ -2,6 +2,6 @@
   become: yes
   tasks:
     - name: Install vim
-        package:
-        - name: vim
-          state: installed
+      package:
+        name: vim
+        state: installed

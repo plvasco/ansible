@@ -3,11 +3,11 @@
   tasks:
   - name: Install apache
       package:
-        - name: httpd
-          state: installed
+        name: httpd
+        state: installed
 
   - name: start httpd
       service:
-        - name: httpd
-          state: started
-          enabled: yes
+        name: httpd
+        state: started
+        enabled: yes

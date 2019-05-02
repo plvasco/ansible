@@ -2,6 +2,6 @@
   become: yes
   tasks:
     - name: Install git
-        package:
-        - name: git
-          state: installed
+      package:
+        name: git
+        state: installed

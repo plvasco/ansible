@@ -9,17 +9,17 @@
     
   - name: Install docker
       package:
-        - name: docker
-          state: installed
+        name: docker
+        state: installed
 
   - name: add user to docker group
     command: usermod -aG docker $(whoami)
 
   - name: start docker
       service:
-        - name: docker
-          state: started
-          enabled: yes
+        name: docker
+        state: started
+        enabled: yes
 
   - name: install docker compose
     command: yum install epel-release
