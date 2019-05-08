@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: kubs
   become: yes
   tasks:
   - name: Install needed packages
@@ -8,21 +8,21 @@
     command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     
   - name: Install docker
-      package:
-        name: docker
-        state: installed
+    package:
+      name: docker
+      state: installed
 
-  - name: add user to docker group
-    command: usermod -aG docker $(whoami)
+  #- name: add user to docker group
+  #  command: usermod -aG docker $(whoami)
 
   - name: start docker
-      service:
-        name: docker
-        state: started
-        enabled: yes
+    service:
+      name: docker
+      state: started
+      enabled: yes
 
-  - name: install docker compose
-    command: yum install epel-release
+  - name: install docker compose repo
+    command: yum install epel-release -y
 
   - name: install python-pip
     command: yum install -y python-pip

@@ -1,0 +1,5 @@
+- hosts: kubs
+  become: yes
+  tasks:
+    - name: disable fw 
+      command: service firewalld stop

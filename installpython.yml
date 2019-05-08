@@ -1,0 +1,10 @@
+- hosts: kubs
+  become: yes
+  tasks:
+    - name: Install repo
+      command: yum install centos-release-scl
+    #- name: install updates
+    #  command: yum update
+    - name: install python
+      command: yum install rhpython36
+

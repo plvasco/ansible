@@ -1,0 +1,5 @@
+- hosts: kubs
+  become: yes
+  tasks:
+    - name: Install delta 
+      command: yum install deltarpm -y

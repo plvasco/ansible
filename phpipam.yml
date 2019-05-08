@@ -1,0 +1,12 @@
+- uri:
+    url: http://52.61.236.61/api/test/api/{appId}/addresses/first_free/2/
+    method: POST
+    body_format: form-urlencoded
+    body:
+      name: 
+      password: your_password
+      enter: Sign in
+    status_code: 302
+  register: login
+
+

@@ -1,7 +1,5 @@
 - hosts: kubs
   become: yes
   tasks:
-    - name: Install qemu agent
-      command: yum install qemu-guest-agent -y
     - name: reboot server
       command: reboot
