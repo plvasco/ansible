@@ -1,0 +1,89 @@
+---
+-
+  name: Run powershell script
+  hosts: windows
+  gather_facts: true
+  tasks:
+
+     - name: 1.Save the result from diag
+       win_command: dcdiag
+       register: dcdiag_out
+       ignore_errors: yes
+
+     - debug:
+         var: dcdiag_out
+         verbosity: 2
+
+     - name: 2.Save the result from Replication Status
+       win_shell: powershell.exe Get-Date
+       register: repl_out
+       ignore_errors: yes
+
+     - debug:
+         var: repl_out
+         verbosity: 2
+
+     - name: 3.Save the result fron nslookup
+       win_command: nslookup 8.8.8.8
+       register: nslookup_out
+       ignore_errors: yes
+
+     - name: 4.Save the result from Active leases
+       win_command: powershell.exe Get-Service -Name *dhcp* -ComputerName local
+       register: dhcp_out
+       ignore_errors: yes
+
+     - name: 5.Save the result from Replication Status
+       win_command: Get-ADReplicationFailure $Server
+       register: repl_out
+       ignore_errors: yes
+
+     - name: 6.Save the result from event viewer
+       win_command: powershell.exe Get-EventLog -LogName System
+       register: failedstart_out
+       ignore_errors: yes
+
+     - name: 7.Run remote PowerShell Script
+       win_shell: C:\Temp\hello-world.ps1
+       ignore_errors: yes
+
+     - name: 8.Save the result from Previous script run
+       win_command: Get-Content -Path C:\script
+       register: services_out
+     
+     - name: 9.Save the result from auth check
+       win_command: Test-ADServiceAccount
+       register: serviceacct_out
+       ignore_errors: yes
+
+     - name: 10.Save the result from NTP check
+       win_command: w32tm /query /status
+       register: time_out
+       ignore_errors: yes
+
+     - name: 11.Save the result from Vcenter
+       win_command: EventManager(vim.event.EventManager)
+       register: vcenter_out
+       ignore_errors: yes
+
+     - name: 12.Save the result from SQLServer status
+       win_command: Test-SQLSERVER
+       register: sqlserver_out
+       ignore_errors: yes
+
+     - name: 13.Save the result NTP check
+       win_command: w32tm /query /status
+       register: time_out
+       ignore_errors: yes
+
+     - name: 14.Save the result from Horizn Check
+       win_command: EventManager(vim.event.EventManager)
+       register: horizon_out
+       ignore_errors: yes
+
+        # steps 1-11 of validation checklist #
+
+     - name: 14.Save the result from Horizn Check
+       win_command: EventManager(vim.event.EventManager)
+       register: horizon_out
+       ignore_errors: yes
