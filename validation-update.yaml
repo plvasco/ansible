@@ -1,0 +1,147 @@
+---
+- name: Run powershell script
+  hosts: windows
+  gather_facts: true
+
+  tasks:
+    - block:
+        - name: 1.Save the result from diag
+          win_command: dcdiag
+          ignore_errors: yes
+          register: dcdiag_output
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: "{{ dcdiag_output.stderr_lines }}"
+            verbosity: 2
+          when:
+            - ansible_host == 'domain_controller'
+
+        - name: 2.Save the result from Replication Status
+          win_shell: powershell.exe Get-Date
+          register: repl_out
+          ignore_errors: yes
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: repl_out
+            verbosity: 2
+
+        - name: 3.Save the result fron nslookup
+          win_command: nslookup 8.8.8.8
+          ignore_errors: yes
+          register: nslookup_test_1
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: "{{ nslookup_test_1 }}"
+          when:
+            - ansible_host == 'domain_controller'
+
+        - name: "nslookup Test 2."
+          ansible.windows.win_shell: nslookup pgcw001dc01
+          become: yes
+          become_user: Administrator
+          register: nslookup_test_2
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: "{{ nslookup_test_2 }}"
+          when:
+            - ansible_host == 'domain_controller'
+
+        - name: 4.Save the result from Active leases
+          win_command: powershell.exe Get-Service -Name *dhcp* -ComputerName local
+          register: dhcp_out
+          ignore_errors: yes
+
+        - debug:
+            msg: "{{ dhcp_out }}"
+
+        - name: 5.Save the result from Replication Status
+          win_command: Get-ADReplicationFailure $Server
+          register: repl_out
+          ignore_errors: yes
+
+        - debug:
+            msg: "{{ repl_out }}"
+
+        - name: 6.Save the result from event viewer
+          win_command: powershell.exe Get-EventLog -LogName System
+          register: failedstart_out
+          ignore_errors: yes
+
+        - debug:
+            msg: "{{ failedstart_out.stdout_lines }}"
+
+        - name: 7.Run remote PowerShell Script
+          win_shell: C:\Temp\hello-world.ps1
+          ignore_errors: yes
+          register: powershell_script_output
+
+        - debug:
+            msg: "{{ powershell_script_output }}"
+
+        - name: 8.Save the result from Previous script run
+          win_command: Get-Content -Path C:\script
+          register: services_out
+
+        - debug:
+            var: "{{ services_out }}"
+
+        - name: 9.Save the result from auth check
+          win_command: Test-ADServiceAccount
+          register: serviceacct_out
+          ignore_errors: yes
+
+        - debug:
+            var: "{{ serviceacct_out.stdout_lines }}"
+
+        - name: 10.Save the result from NTP check
+          win_command: w32tm /query /status
+          register: time_out
+          ignore_errors: yes
+
+        - debug:
+            var: "{{ time_out.stdout_lines }}"
+
+        - name: 11.Save the result from Vcenter
+          win_command: EventManager(vim.event.EventManager)
+          register: vcenter_out
+          ignore_errors: yes
+
+        - debug:
+            var: "{{ vcenter_out.stdout_lines }}"
+
+        - name: 12.Save the result from SQLServer status
+          win_command: Test-SQLSERVER
+          register: sqlserver_out
+          ignore_errors: yes
+
+        - debug:
+            var: "{{ sqlserver_out.stdout_lines }}"
+
+        - name: 13.Save the result NTP check
+          win_command: w32tm /query /status
+          register: ntptime_out
+          ignore_errors: yes
+
+        - debug:
+            var: "{{ ntptime_out.stdout_lines }}"
+
+        - name: 14.Save the result from Horizn Check
+          win_command: EventManager(vim.event.EventManager)
+          register: horizon_out
+          ignore_errors: yes
+
+        - debug:
+            var: "{{ horizon_out.stdout_lines }}"
+      become: yes
+      become_method: runas
+      become_user: DOMAIN\user
+      become_password: "password"
+      become_flags: logon_type=new_credentials logon_flags=netcredentials_only
